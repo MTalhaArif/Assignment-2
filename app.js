@@ -2,7 +2,7 @@ const express= require('express');
 const mongoose=require('mongoose');
 
 const Blogs= require('./models/blogs')
-//creating express app
+//creating express app files
 const app=express();
 
 //connect to mongo db
