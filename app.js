@@ -1,8 +1,9 @@
 const express= require('express');
 const mongoose=require('mongoose');
 
-const Blogs= require('./models/blogs')
-//creating express app 
+
+const blogRoutes= require('./routes/blogRoutes');
+//creating express app
 const app=express();
 
 //connect to mongo db
@@ -97,62 +98,10 @@ app.get('/about',(req, res)=>{
 })
 
 //blog routes
+app.use('/blogs' , blogRoutes);
 
 //get request handler
 
-app.get('/blogs',(req,res)=>
-{
-    Blogs.find().sort({createdAt: -1})
-    .then((result)=>
-    {
-        res.render('index',{title: 'All Blogs',blogs: result });
-
-    })
-    .catch((err)=>{console.log(err)});
-});
-
-app.get('/blogs/create',(req, res)=>{
-
-    res.render('create',{ title: 'Create Blog'});
-});
-
-
-//post request handler
-app.post('/blogs',(req,res)=>
-{
-    const blog= new Blogs(req.body);
-    blog.save()
-    .then((result)=>
-    {
-        res.redirect('/blogs');
-    })
-    .catch((err)=>{console.log(err)});
-
-});
-
-app.get('/blogs/:id', (req, res)=>
-{
-    const id= req.params.id;
-    Blogs.findById(id)
-    .then((result) =>
-        {
-            res.render('details', {blogs : result , title : 'Blogs Details'});
-        })
-        .catch((err)=>{console.log(err)});
-});
-
-//delete request
-
-app.delete('/blogs/:id', (req, res)=>
-{
-    const id= req.params.id; 
-    Blogs.findByIdAndDelete(id)
-    .then((result)=>
-    {
-        res.json({redirect: '/blogs'})
-    })
-    .catch((err)=>{console.log(err)});
-});
 
 
 //404
